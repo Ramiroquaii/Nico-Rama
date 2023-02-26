@@ -1,0 +1,40 @@
+h1 {
+    color: blue;
+}
+
+label {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.table-line {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+    background-color: darkgrey;
+}
+
+.nameTb { min-width: 220px; font-weight: bold; font-style: italic; }
+.priceTd { min-width: 100px;  font-weight: bold; color:crimson; }
+
+
+.chatContent { display: flex; flex-direction: column; }
+.chatLine { display: flex; flex-direction: row; }
+.user { font-weight: bold; color: blue; }
+.time { color: brown; }
+.msg { font-style: italic; color: green; }
+
+
+.table-line img {
+    width: 70px;
+    height: 70px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+
+.jumbotron {
+    padding-top: 10px;
+}
