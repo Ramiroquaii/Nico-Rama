@@ -18,12 +18,11 @@ socket.on('reload', obj => {
     btnLogin.removeEventListener("click", loginUser);
     
     const object = JSON.parse(obj);
-    console.log(object);
-    document.getElementById('mainHTML').innerHTML = object.html;
-    mainLoadedAfterLogin();
-    document.getElementById('wellcomeUserName').innerHTML = `Bienvenido ${object.user}`;
 
-    socket.emit('loadProductos', '__');
+    document.getElementById('mainHTML').innerHTML = object.html;
+    document.getElementById('wellcomeUserName').innerHTML = `Bienvenido ${object.user}`;
+    eventsAfterLogin();
+    getFirstLoadData();
 });
 
 

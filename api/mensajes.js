@@ -71,4 +71,58 @@ mensajesApiRouter.delete('/api/mensajes/:id', (req, res) => {
     res.send("ELIMINACION de Mensaje");
 });
 
-module.exports = mensajesApiRouter;
+
+async function getMensajes(){
+    const client = connectAtlas();
+    const databaseAtlas = client.db(database);
+    const collectionProductos = databaseAtlas.collection("mensajes");
+
+    let mensajes=[];
+    try {
+        const options = {
+            sort: { name: 1 }, // sort returned documents in ascending order by name (A->Z).
+        };
+        const cursorAtlas = collectionProductos.find({},options);
+
+        if ((await cursorAtlas.countDocuments) === 0) {
+            productos.push( {error: "NO EXISTEN MENSAJES EN LA BASE"} );
+        } else {
+            await cursorAtlas.forEach(element => mensajes.push(element));
+        }
+    } finally {
+        await client.close();
+    }
+    return mensajes;
+}
+
+async function saveMensaje(mensaje){
+    let now = getTime();
+    const newMsg = { timestamp: now, ...mensaje };
+
+    const client = connectAtlas();
+    const databaseAtlas = client.db(database);
+    const collectionProductos = databaseAtlas.collection("mensajes");
+    try {
+        const cursorAtlas = collectionProductos.insertOne(newMsg, function(err, res) {
+            if (err) throw err;
+            console.log(`Document inserted: ${newMsg}`);
+        });
+    } finally {
+        await client.close();
+        return newMsg;
+    }
+}
+
+function getTime(){
+    var currentdate = new Date(); 
+    var datetime =  currentdate.getDate() + "/"
+                  + (currentdate.getMonth()+1)  + "/" 
+                  + currentdate.getFullYear() + " @ "  
+                  + currentdate.getHours() + ":"  
+                  + currentdate.getMinutes() + ":" 
+                  + currentdate.getSeconds();
+    return datetime;
+}
+
+
+module.exports = { mensajesApiRouter, getMensajes, saveMensaje };
