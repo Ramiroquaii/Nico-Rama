@@ -5,6 +5,7 @@ const expressSession = require('express-session');
 
 const { productosApiRouter } = require('./api/productos.js');
 const { mensajesApiRouter } = require('./api/mensajes.js');
+const { userApiRouter } = require('./api/users.js');
 
 const { productSocket } = require('./webSocket/productosWS.js');
 const { messageSocket } = require('./webSocket/mensajesWS.js');
@@ -29,6 +30,25 @@ app.use(expressSession({
 
 app.use(productosApiRouter);
 app.use(mensajesApiRouter);
+app.use(userApiRouter);
+
+app.get('/quiensoy', (req,res) => {
+  if(req.session.loguedUser){
+    res.send(`Usuario Logueado: ${req.session.loguedUser} !!!`);
+  } else {
+    res.send(`No se ha iniciado session aún !!!`);
+  }
+});
+
+app.get('/logout', (req,res) => {
+  req.session.destroy((err) => {
+    if (err) {
+        res.status(500).send(`Something terrible just happened!!!`);
+    } else {
+        res.redirect('/');
+    }
+  })
+});
 
 io.on('connection', async client => {
   console.log(`Client ${client.id} connected`);
@@ -36,19 +56,13 @@ io.on('connection', async client => {
   productSocket(client, io.sockets);
   messageSocket(client, io.sockets);
 
-  client.on('login-user', logUser => {
-    // Verificacion de usuario en Base de Datos y GENERACION de SESION...
-    if(logUser.user == "Ramiro"){
-      const sendString = JSON.stringify({ user: logUser.user, html: mainPage });
+  client.on('login-user', data => {
+    if(data.estado == 1){
+      const sendString = JSON.stringify({ user: data.usuario, html: mainPage });
       client.emit('reload', sendString);
     } else {
-      client.emit('user-error', "A ocurrido un error");
+      client.emit('user-error', data.mensaje);
     }
-  });
-
-  client.on('logout', logUser => {
-    // CERRAR SESION y tratamiento de cookies...
-    client.emit('redirect', 'http://localhost:8080');
   });
 });
 

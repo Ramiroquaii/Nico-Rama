@@ -3,6 +3,7 @@
     <div class="jumbotron" id="wellcome">
         <h1 id="wellcomeUserName"></h1>
         <button class="btn btn-success mt-3" id="btn-logout" type="post" action="/logout">Salir</button>
+        <button class="btn btn-success mt-3" id="btn-quienSoy" type="submit" action="/quiensoy">Test Session</button>
     </div>
 
     <div class="jumbotron">
@@ -37,6 +38,9 @@
         <h1>Lista de Productos</h1>
 
         <div id="productList">
+            <div class="loading">
+                <div class="loading-icon"></div>
+            </div>
         </div>
 
     </div>
@@ -63,6 +67,9 @@
         </form>
         <hr>
         <div id="chatContent">
+            <div class="loading">
+                <div class="loading-icon"></div>
+            </div>
         </div>
 
     </div>

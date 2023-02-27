@@ -25,7 +25,7 @@ productosApiRouter.get('/api/productos', async (req, res) => {
     let productos=[];
     try {
         const options = {
-            sort: { name: -1 }, // sort returned documents in ascending order by name (A->Z).
+            sort: { name: 1 }, // sort returned documents in ascending order by name (A->Z).
             projection: { _id: 1, name: 1, price: 1, photo: 1 }, // Include only fields in document.
         };
         const cursorAtlas = collectionProductos.find({},options);
@@ -65,11 +65,6 @@ productosApiRouter.get('/api/productos/:prodName', async (req, res) => {
 });
 
 productosApiRouter.post('/api/productos', async (req, res) => {
-    // const name = req.body.name;
-
-    // const product = await fetch(`localhost:8080/api/productos/${name}`);
-    // if(product == null)
-
     res.send("ALTA de Producto");
 });
 
