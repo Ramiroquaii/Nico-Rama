@@ -4,9 +4,37 @@
     <main> 
         <h1 >Hola <%= user %></h1>
         <div id="productList">
-            <%= products[3].nombre %>
-        </div>
 
+            <%products.forEach(product => {%>
+
+                <article class="cardBox">
+                    <figure class="fotoProducto">
+                        <img src="${foto}" alt="">
+                    </figure>
+                    <div class="marcoSkew">
+                        <h4 class="modelo"><%= product.nombre %></h4>
+                    </div>
+                    
+                    <figure class="estrellaFigure">
+                        <img class="afueraCarrito" id="${_id}" src="assets/img/estrella_tienda.svg" alt="">
+                    </figure>
+                    
+                    <div class="detalle">
+                        <img class="afueraCarrito" id="${_id}" src="assets/img/sumar_a_carrito.svg" alt="">
+                    </div>
+
+                    <div class="caracteristicas">
+                        <p class="tipo"><%= product.descripcion %></p>
+                        <div class="barra"></div>
+                        <p class="medida">${<%= product.tamanio %>}</p>
+                    </div>
+                    <p class="precio">${<%= product.precio %>}</p>
+                    <button class="addProduct">Agregar a carrito</button>
+                </article>
+
+                <% }) %>
+            </div>
+            
     
     </main>
 
