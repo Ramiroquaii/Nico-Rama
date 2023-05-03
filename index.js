@@ -6,6 +6,8 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('connect-flash');
 
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./graphql/schema');
 
 // initializations
 const app = express();
@@ -34,9 +36,17 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+app.use('/graphql', graphqlHTTP({
+    schema,
+    graphiql: true
+}));
+
 
 app.use((req, res, next) => {
     res.locals.signupMessage = req.flash('signupMessage');
